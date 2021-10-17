@@ -19,6 +19,8 @@ def set_local_stat(args):
     args.tracking = {'cosine': [], 'distance': []}
     args.comm_time = []
     args.comp_time = []
+    args.global_loss = []
+    args.test_accuracy = []
 
 
 def init_config(args):

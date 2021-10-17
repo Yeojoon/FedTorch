@@ -118,7 +118,7 @@ def fedaq_aggregation(args, model_server, model_client, model_server_ag, model_c
     #for client_param, client_ag_param in zip(model_client.parameters(), model_client_ag.parameters()):
     #    client_param.data -= client_param.grad.data
     #    client_ag_param.data -= client_ag_param_grad
-    args.comp_time[-1] += (time.time() - st_comp - sum_comm) 
+    #args.comp_time[-1] += (time.time() - st_comp - sum_comm) 
     args.comm_time[-1] += sum_comm
 
     # Reassign model_client to model_server

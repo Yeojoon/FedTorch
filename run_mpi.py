@@ -5,7 +5,7 @@ import argparse
 def main(args):
     model={'epsilon':'logistic_regression', 
            'MSD':'robust_least_square', 
-           'cifar10':'mlp', 
+           'cifar10':'cnn', 
            'emnist':'mlp',
            'emnist_full':'mlp', 
            'mnist':'mlp',

@@ -227,7 +227,7 @@ def train_and_validate_federated(client):
             # Do the validation on the server model
             performance = do_validate(client.args, client.model_server, client.optimizer, client.criterion, client.metrics, 
                         client.train_loader, online_clients_group, data_mode='train')
-            #log("check! The global loss is {}".format(performance[2]), client.args.debug)
+            client.args.global_loss.append(performance[2].item())
             if client.args.fed_personal:
                 do_validate(client.args, client.model_server, client.optimizer, client.criterion, client.metrics, 
                             client.val_loader, online_clients_group, data_mode='validation')
@@ -242,11 +242,15 @@ def train_and_validate_federated(client):
             if client.args.graph.rank == 0:
                 do_validate(client.args, client.model_server, client.optimizer, client.criterion, client.metrics, 
                             client.test_loader, online_clients_group, data_mode='test')
-                #print('check! The accuracy is {}'.format(client.args.cur_prec1))
+                client.args.test_accuracy.append(client.args.cur_prec1)
+                log('The test accuracy is: {}'.format(client.args.cur_prec1), client.args.debug)
             log('This round computation time is: {}'.format(client.args.comp_time[-1]), client.args.debug)
             log('This round communication time is: {}'.format(client.args.comm_time[-1]), client.args.debug)
         else:
             log("Offline in this round. Waiting on others to finish!", client.args.debug)
         dist.barrier(group=client.all_clients_group)
-
+    
+    log('The computation time array is {}'.format(client.args.comp_time), client.args.debug)
+    log('The global loss array is {}'.format(client.args.global_loss), client.args.debug)
+    log('The test accuracy array is {}'.format(client.args.test_accuracy), client.args.debug)
     return

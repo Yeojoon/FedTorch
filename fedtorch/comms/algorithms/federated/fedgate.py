@@ -121,7 +121,7 @@ def fedgate_aggregation(args, model_server, model_client, model_delta, model_mem
         apply_out_momentum=args.out_momentum,
     )
     
-    args.comp_time[-1] += (time.time() - st_comp - sum_comm)
+    #args.comp_time[-1] += (time.time() - st_comp - sum_comm)
     args.comm_time[-1] += sum_comm
 
     # Reassign model_client to model_server
