@@ -18,8 +18,19 @@ You should run the docker container with installed dependencies.
 ```cli
 docker run --rm -it --mount type=bind,source="{path/to/FedTorch}",target=/FedTorch docker.pkg.github.com/mloptpsu/fedtorch/fedtorch:cuda10.2-mpi
 ```
-This will run the container and will mount the FedTorch repo to it. The `{path/to/FedTorch}` should be replaced with your local path to the FedTorch repo directory. After you run the above command, you should change the current working directory from workspace into FedTorch. 
+This will run the container and will mount the FedTorch repo to it. The `{path/to/FedTorch}` should be replaced with your local path to the FedTorch repo directory. After you run the above command, you should change the current working directory from workspace into FedTorch.
 
+### Homogeneous MNIST Experiment
+
+```cli
+python run_mpi.py -f -ft fedaq -n 18 -d mnist -lg 0.1 -ld 1.02 -lb 0.01 -b 50 -c 50 -i -k 1.0 -fs local_step -l 100 -q
+``` 
+The default quantization is 8 bits quantization. If you want to run with 4 bits quantization, you should add `-B 4`. You can find more details on parameters in run_mpi.py and parameters.py in FedTorch/fedtorch/
+### Homogeneous CIFAR-10 Experiment
+```cli
+python run_mpi.py -f -ft fedaq -n 8 -d cifar10 -lg 0.01 -ld 1.01 -lb 0.2 -b 50 -c 100 -i -k 1.0 -fs local_step -l 100 -q
+```
+You can also add `-B 4` here if you want to run with 4 bits quantization. 
 
 # Original FedTorch README
 
