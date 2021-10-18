@@ -37,6 +37,7 @@ Similarly, you can run the CIFAR-10 experiment with the above command. You can a
 1. FedAvg -> `-ft fedavg` and delete `-q`
 2. FedPAQ -> `-ft fedavg`
 3. FedCOMGATE -> `-ft fedgate`
+
 You can find more details from the original FedTorch README below.
 
 # Original FedTorch README
