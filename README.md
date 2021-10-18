@@ -9,6 +9,18 @@ We follow [FedTorch](https://github.com/MLOPTPSU/FedTorch) codes. We add our Fed
 3. main.py : We added some parts about the FedAQ algorithm to the original main.py -> You can find this file in FedTorch/fedtorch/comms/trainings/federated
 4. We also changed minor parts of other files to make FedAQ work.
 
+## Installation
+
+Please make sure you install docker before you check this Installation part. Then, please follow the Installation part of the original FedTorch README (You can find it below.)
+
+## Running FedAQ examples
+You should run the docker container with installed dependencies.
+```cli
+docker run --rm -it --mount type=bind,source="{path/to/FedTorch}",target=/FedTorch docker.pkg.github.com/mloptpsu/fedtorch/fedtorch:cuda10.2-mpi
+```
+This will run the container and will mount the FedTorch repo to it. The `{path/to/FedTorch}` should be replaced with your local path to the FedTorch repo directory. After you run the above command, you should change the current working directory from workspace into FedTorch. 
+
+
 # Original FedTorch README
 
 ![FedTorch Logo](./logo.png)
