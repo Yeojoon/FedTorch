@@ -1,6 +1,13 @@
 # FedAQ README
 
-We follow [FedTorch](https://github.com/MLOPTPSU/FedTorch) codes. We add our FedAQ algorithm to FedTorch. 
+We follow [FedTorch](https://github.com/MLOPTPSU/FedTorch) codes. We add our FedAQ algorithm to FedTorch.
+
+## What's New for FedAQ
+
+1. asgd.py : You can find this new file in FedTorch/fedtorch/components/optimizers/
+2. fedaq.py : You can find this new file in FedTorch/fedtorch/comms/algorithms/federated/
+3. main.py : We added some parts about the FedAQ algorithm to the original main.py -> You can find this file in FedTorch/fedtorch/comms/trainings/federated
+4. We also changed minor parts of other files to make FedAQ work.
 
 # Original FedTorch README
 
