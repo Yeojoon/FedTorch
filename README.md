@@ -1,3 +1,7 @@
+# FedAQ README
+
+We follow [FedTorch](https://github.com/MLOPTPSU/FedTorch) codes. We add our FedAQ algorithm to FedTorch. 
+
 # Original FedTorch README
 
 ![FedTorch Logo](./logo.png)
