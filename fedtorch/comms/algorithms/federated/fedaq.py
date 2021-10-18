@@ -31,7 +31,6 @@ def fedaq_aggregation(args, model_server, model_client, model_server_ag, model_c
     for server_param, client_param, server_ag_param, client_ag_param in zip(model_server.parameters(), model_client.parameters(), model_server_ag.parameters(), model_client_ag.parameters()):
         # get model difference.
         client_param.grad.data = (server_param.data - client_param.data) * rank_weight
-        #client_ag_param.grad.data = (server_ag_param.data - client_ag_param.data) * rank_weight
         client_ag_param_grad = (server_ag_param.data - client_ag_param.data) * rank_weight
         if args.quantized:
             grad_q, q_info = quantize_tensor(client_param.grad.data, num_bits= args.quantized_bits, adaptive=True)
@@ -46,7 +45,6 @@ def fedaq_aggregation(args, model_server, model_client, model_server_ag, model_c
             dist.gather(grad_q, gather_list=gather_list_tensor, dst=0, group=group)
             dist.gather(q_info_ag, gather_list=gather_list_info_ag, dst=0, group=group)
             dist.gather(grad_q_ag, gather_list=gather_list_tensor_ag, dst=0, group=group)
-            #args.comm_time[-1] += time.time() - st
             sum_comm += time.time() - st
 
             if args.graph.rank == 0:
@@ -72,21 +70,16 @@ def fedaq_aggregation(args, model_server, model_client, model_server_ag, model_c
             dist.broadcast(d, src=0, group=group)
             dist.broadcast(avg_info_ag, src=0, group=group)
             dist.broadcast(d_ag, src=0, group=group)
-            #args.comm_time[-1] += time.time() - st
             sum_comm += time.time() - st
             client_param.grad.data = dequantize_tensor(d,avg_info)
             client_ag_param_grad = dequantize_tensor(d_ag, avg_info_ag)
         else:
-            # all reduce. This schema is not used in real federated setting
-            # dist.all_reduce(client_param.grad.data,  op=dist.ReduceOp.SUM, group=group)
-
             #### Federated communication #####
             gather_list = [torch.ones_like(client_param.grad.data) for _ in range(num_online_clients)] if args.graph.rank == 0 else None
             gather_list_ag = [torch.ones_like(client_ag_param_grad) for _ in range(num_online_clients)] if args.graph.rank == 0 else None
             st = time.time()
             dist.gather(client_param.grad.data, gather_list=gather_list, dst=0, group=group)
             dist.gather(client_ag_param_grad, gather_list=gather_list_ag, dst=0, group=group)
-            #args.comm_time[-1] += time.time() - st
             sum_comm += time.time() - st
             if args.graph.rank == 0:
                 gather_list = gather_list if 0 in online_clients else gather_list[1:]
@@ -99,7 +92,6 @@ def fedaq_aggregation(args, model_server, model_client, model_server_ag, model_c
             st = time.time()
             dist.broadcast(d, src=0, group=group)
             dist.broadcast(d_ag, src=0, group=group)
-            #args.comm_time[-1] += time.time() - st
             sum_comm += time.time() - st
             client_param.grad.data = d
             client_ag_param_grad = d_ag
@@ -108,16 +100,6 @@ def fedaq_aggregation(args, model_server, model_client, model_server_ag, model_c
         client_param.data = server_param.data - client_param.grad.data
         client_ag_param.data = server_ag_param.data - client_ag_param_grad
 
-    # apply gradient to each client's model
-    #optimizer.step(
-    #    apply_lr=False,
-    #    scale=args.lr_scale_at_sync,
-    #    apply_in_momentum=False,
-    #    apply_out_momentum=args.out_momentum,
-    #)
-    #for client_param, client_ag_param in zip(model_client.parameters(), model_client_ag.parameters()):
-    #    client_param.data -= client_param.grad.data
-    #    client_ag_param.data -= client_ag_param_grad
     #args.comp_time[-1] += (time.time() - st_comp - sum_comm) 
     args.comm_time[-1] += sum_comm
 

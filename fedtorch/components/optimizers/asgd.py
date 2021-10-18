@@ -44,21 +44,8 @@ class ASGD(Optimizer):
 
             for p in group['params']:
                 param_state = self.state[p]
-                param_state['prev_model_buffer'] = p.data.clone().detach() ## use detach() or not?
+                param_state['prev_model_buffer'] = p.data.clone().detach() 
 
-    '''
-    def get_middle(self, model_ag, **kargs):
-        """ Compute the middle parameters by coupling"""
-        for group in self.param_groups:
-            beta = group['beta']
-
-            for p, p_ag in zip(group['params'], model_ag.parameters()):
-                param_state = self.state[p]
-                param_state['prev_model_buffer'] = p.data.clone().detach() ## use detach() or not?
-                print(p.data.shape)
-                print(p_ag.data.shape)
-                p.data.mul_(1/beta).add_(p_ag.data,alpha=1 - 1/beta)
-    '''
 
     def step(self, closure=None, apply_lr=True, **kargs):
         """Performs a single optimization step.
@@ -87,7 +74,7 @@ class ASGD(Optimizer):
                 if weight_decay != 0 and apply_lr:
                     d_p.add_(p.data,alpha=weight_decay)
 
-                # gradient step with coupling two parameters
+                # gradient step with coupling two parameters (update w_{k, t}^m in the FedAQ paper)
                 p.data.mul_(1/alpha).add_(param_state['prev_model_buffer'], alpha=1 - 1/alpha).add_(d_p, alpha=-lr_gamma)
                 
         return loss

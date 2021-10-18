@@ -53,9 +53,6 @@ def train_and_validate_federated(client):
     start_global_time = time.time()
     tracker['start_load_time'] = time.time()
     log('enter the training.', client.args.debug)
-    #if client.args.federated_type == 'fedaq':
-    #    for client_ag_param in client.model_ag.parameters():
-    #        client_ag_param.data.requires_grad=True
 
     # Number of communication rounds in federated setting should be defined
     for n_c in range(client.args.num_comms):
@@ -151,6 +148,7 @@ def train_and_validate_federated(client):
                                 loss += client.args.fedprox_mu /2 * torch.norm(client_param.data - server_param.data)
                                 client_param.grad.data += client.args.fedprox_mu * (client_param.data - server_param.data)
                         elif client.args.federated_type == 'fedaq':
+                            # Update w_{k, t}^{ag, m} in the FedAQ paper
                             for client_param, client_ag_param in zip(client.model.parameters(), client.model_ag.parameters()):
                                 client_ag_param.data = client_param.data - lr*client_param.grad.data
                         
