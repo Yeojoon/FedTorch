@@ -15,6 +15,10 @@ Please make sure you install docker before you check this Installation part. The
 ```cli
 docker pull docker.pkg.github.com/mloptpsu/fedtorch/fedtorch:cuda10.2-mpi
 ```
+If this does not work, please try this
+```cli
+docker pull mmkamani/pytorch-cuda-mpi:v1.6.0
+```
 
 ## Running FedAQ examples
 You should run the docker container with installed dependencies.
@@ -22,6 +26,11 @@ You should run the docker container with installed dependencies.
 docker run --rm -it --mount type=bind,source="{path/to/FedTorch}",target=/FedTorch docker.pkg.github.com/mloptpsu/fedtorch/fedtorch:cuda10.2-mpi
 ```
 This will run the container and will mount the FedTorch repo to it. The `{path/to/FedTorch}` should be replaced with your local path to the FedTorch repo directory. After you run the above command, you should change the current working directory from workspace into FedTorch.
+
+If the above one does not work, please try this
+```cli
+docker run --rm -it --mount type=bind,source="{path/to/FedTorch}",target=/FedTorch mmkamani/pytorch-cuda-mpi:v1.6.0
+```
 
 ### Homogeneous MNIST Experiment
 
