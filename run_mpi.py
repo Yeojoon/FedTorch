@@ -8,7 +8,7 @@ def main(args):
            'cifar10':'cnn', 
            'emnist':'mlp',
            'emnist_full':'mlp', 
-           'mnist':'mlp',
+           'mnist':'mlp',  # use 'logistic_regression' for the strongly convex mnist experiment
            'synthetic':'logistic_regression',
            'fashion_mnist':'mlp',
            'adult':'logistic_regression'}
