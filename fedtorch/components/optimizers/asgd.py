@@ -25,8 +25,12 @@ class ASGD(Optimizer):
                  weight_decay=0, args=None):
         self.lr_eta = lr_eta
         self.lr_gamma = max(math.sqrt(lr_eta/(lambd*local_step)), lr_eta)
+        # condition set (1)
         self.alpha = 1/(self.lr_gamma*lambd)
         self.beta = self.alpha + 1
+        # condition set (2)
+        #self.alpha = 3/(2*self.lr_gamma*lambd) - 1/2
+        #self.beta = (2*self.alpha**2 - 1)/(self.alpha - 1)
         defaults = dict(lr_eta=self.lr_eta, lr_gamma=self.lr_gamma,
                         alpha=self.alpha, beta=self.beta,
                         weight_decay=weight_decay, args=args)
