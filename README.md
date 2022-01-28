@@ -29,6 +29,7 @@ This will run the container and will mount the FedTorch repo to it. The `{path/t
 python run_mpi.py -f -ft fedaq -n 18 -d mnist -lg 0.1 -ld 1.02 -lb 0.01 -b 50 -c 50 -i -k 1.0 -fs local_step -l 100 -q
 ``` 
 This will run the training on 18 nodes with initial learning rate of 0.1, learning rate decay rate of 1.02, strongly convexity estimate (mu in the FedAQ algorithm) 0.01, the batch size of 50, for 50 communication rounds each with 100 local steps of FedAQ. `-i` means the dataset is distributed homogeneously with each client has access to all 10 classes of data from the MNIST dataset. `-q` means we use quantization for FedAQ. For example, if we do not use `-q`, it becomes the FedAC algorithm. The default quantization is 8 bits quantization. If you want to run with 4 bits quantization, you should add `-B 4`. You can find more details on parameters in `run_mpi.py` and parameters.py in `FedTorch/fedtorch/`. 
+
 If you want to do experiments on MNIST with strongly convex settings, please go to FedTorch/run_mpi.py and 
 ### Homogeneous CIFAR-10 Experiment
 ```cli
